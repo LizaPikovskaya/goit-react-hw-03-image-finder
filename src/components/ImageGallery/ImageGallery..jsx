@@ -32,6 +32,7 @@ export class ImageGallery extends Component {
             }
           })
           .then(data => {
+            console.log(data);
             if (prevState.page !== this.state.page) {
               this.setState(prevState => ({
                 searchData: [...prevState.searchData, ...data.hits],
@@ -63,13 +64,18 @@ export class ImageGallery extends Component {
 
   render() {
     const { searchData, loading, error } = this.state;
+    console.log(searchData);
     ImageGallery.propTypes = {
       [this.props.searchValue]: PropTypes.string,
     };
 
     return (
       <>
-        {error && <p>{error.message}</p>}
+        {error && (
+          <p style={{ margin: 50, fontSize: 24, fontWeight: 500 }}>
+            {error.message}
+          </p>
+        )}
         <GalleryList>
           {searchData.length > 0 &&
             searchData.map(({ id, webformatURL, largeImageURL, tags }) => (
@@ -81,7 +87,7 @@ export class ImageGallery extends Component {
               />
             ))}
         </GalleryList>
-        {!loading && searchData.length > 10 && (
+        {!loading && searchData.length > 11 && (
           <Button handlerOnLoadMoreClick={this.handlerOnLoadMoreClick}>
             Load more
           </Button>

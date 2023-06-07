@@ -18,7 +18,7 @@ export class Searchbar extends Component {
   handlerSubmit = evt => {
     evt.preventDefault();
     if (!this.state.value.trim()) {
-      return toast('Please, fill the field.'); // не працює 
+      return toast.warn('Please, fill the field.'); // не працює 
     }
     this.props.takeValueFromSearchBar(this.state.value);
     this.reset();
