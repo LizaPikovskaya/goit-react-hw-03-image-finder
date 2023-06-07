@@ -8,7 +8,7 @@ import {
 import { ImSearch } from 'react-icons/im';
 import PropTypes from 'prop-types';
 
- import { toast } from 'react-toastify';
+ import { toast, ToastContainer } from 'react-toastify';
  import 'react-toastify/dist/ReactToastify.css';
 
 export class Searchbar extends Component {
@@ -48,6 +48,7 @@ export class Searchbar extends Component {
             placeholder="Search images and photos"
             value={this.state.value}
           />
+          <ToastContainer/>
         </SearchForm>
       </Header>
     );

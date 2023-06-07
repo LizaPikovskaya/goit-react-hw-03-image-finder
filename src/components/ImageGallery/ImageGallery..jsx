@@ -15,11 +15,8 @@ export class ImageGallery extends Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
-    if (
-      prevProps.searchValue !== this.props.searchValue ||
-      prevState.page !== this.state.page
-    ) {
-      this.setState({ loading: true, error: null });
+    if (prevProps.searchValue !== this.props.searchValue) {
+      this.setState({ loading: true, error: null, searchData: [] });
       setTimeout(() => {
         fetchImages(this.props.searchValue, this.state.page)
           .then(resp => {
@@ -42,6 +39,36 @@ export class ImageGallery extends Component {
                 searchData: [...data.hits],
               });
             }
+            if (data.hits.length === 0) {
+              return Promise.reject(
+                new Error('По запросу нічого не знайдено.')
+              );
+            }
+          })
+          .catch(error => this.setState({ error }))
+          .finally(() => {
+            this.setState({ loading: false });
+          });
+      }, 300);
+    }
+
+    if (prevState.page !== this.state.page) {
+      this.setState({ loading: true, error: null });
+      setTimeout(() => {
+        fetchImages(this.props.searchValue, this.state.page)
+          .then(resp => {
+            if (resp.ok) {
+              return resp.json();
+            } else {
+              return Promise.reject(
+                new Error('По запросу нічого не знайдено.')
+              );
+            }
+          })
+          .then(data => {
+            this.setState(prevState => ({
+              searchData: [...prevState.searchData, ...data.hits],
+            }));
             if (data.hits.length === 0) {
               return Promise.reject(
                 new Error('По запросу нічого не знайдено.')
