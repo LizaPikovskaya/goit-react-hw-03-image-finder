@@ -52,7 +52,7 @@ export class ImageGallery extends Component {
           .finally(() => {
             this.setState({ loading: false });
           });
-      }, 1000);
+      }, 300);
     }
   }
 

@@ -29,7 +29,7 @@ export class Modal extends Component {
     return (
       <Overlay onClick={this.handlerOverlayClick}>
         <ModalDiv>
-          <img src={largeImage} alt={tags}/>
+          <img src={largeImage} alt={tags} />
         </ModalDiv>
       </Overlay>
     );
