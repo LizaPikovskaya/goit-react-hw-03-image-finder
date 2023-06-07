@@ -8,8 +8,8 @@ import {
 import { ImSearch } from 'react-icons/im';
 import PropTypes from 'prop-types';
 
- import { toast, ToastContainer } from 'react-toastify';
- import 'react-toastify/dist/ReactToastify.css';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export class Searchbar extends Component {
   state = {
@@ -18,9 +18,10 @@ export class Searchbar extends Component {
   handlerSubmit = evt => {
     evt.preventDefault();
     if (!this.state.value.trim()) {
-      return toast.warn('Please, fill the field.'); // не працює 
+      return toast.warn('Please, fill the field.');
     }
     this.props.takeValueFromSearchBar(this.state.value);
+    this.props.clearDataOnSubmit();
     this.reset();
   };
   handlerOnChange = evt => {
@@ -48,7 +49,7 @@ export class Searchbar extends Component {
             placeholder="Search images and photos"
             value={this.state.value}
           />
-          <ToastContainer/>
+          <ToastContainer />
         </SearchForm>
       </Header>
     );

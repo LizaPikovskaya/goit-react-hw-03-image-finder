@@ -1,101 +1,10 @@
 import { ImageGalleryItem } from 'components/ImageGalleryItem/ImageGalleryItem';
 import { GalleryList } from './ImageGallery.styled';
-import { Component } from 'react';
-import { fetchImages } from 'services/api';
 import { Button } from 'components/Button/Button';
 import PropTypes from 'prop-types';
 import { Loader } from 'components/Loader/Loader';
 
-export class ImageGallery extends Component {
-  state = {
-    searchData: [],
-    loading: false,
-    page: 1,
-    error: null,
-  };
-
-  componentDidUpdate(prevProps, prevState) {
-    if (prevProps.searchValue !== this.props.searchValue) {
-      this.setState({ loading: true, error: null, searchData: [] });
-      setTimeout(() => {
-        fetchImages(this.props.searchValue, this.state.page)
-          .then(resp => {
-            if (resp.ok) {
-              return resp.json();
-            } else {
-              return Promise.reject(
-                new Error('По запросу нічого не знайдено.')
-              );
-            }
-          })
-          .then(data => {
-            console.log(data);
-            if (prevState.page !== this.state.page) {
-              this.setState(prevState => ({
-                searchData: [...prevState.searchData, ...data.hits],
-              }));
-            } else {
-              this.setState({
-                searchData: [...data.hits],
-              });
-            }
-            if (data.hits.length === 0) {
-              return Promise.reject(
-                new Error('По запросу нічого не знайдено.')
-              );
-            }
-          })
-          .catch(error => this.setState({ error }))
-          .finally(() => {
-            this.setState({ loading: false });
-          });
-      }, 300);
-    }
-
-    if (prevState.page !== this.state.page) {
-      this.setState({ loading: true, error: null });
-      setTimeout(() => {
-        fetchImages(this.props.searchValue, this.state.page)
-          .then(resp => {
-            if (resp.ok) {
-              return resp.json();
-            } else {
-              return Promise.reject(
-                new Error('По запросу нічого не знайдено.')
-              );
-            }
-          })
-          .then(data => {
-            this.setState(prevState => ({
-              searchData: [...prevState.searchData, ...data.hits],
-            }));
-            if (data.hits.length === 0) {
-              return Promise.reject(
-                new Error('По запросу нічого не знайдено.')
-              );
-            }
-          })
-          .catch(error => this.setState({ error }))
-          .finally(() => {
-            this.setState({ loading: false });
-          });
-      }, 300);
-    }
-  }
-
-  handlerOnLoadMoreClick = () => {
-    this.setState(prevState => ({
-      page: prevState.page + 1,
-    }));
-  };
-
-  render() {
-    const { searchData, loading, error } = this.state;
-    console.log(searchData);
-    ImageGallery.propTypes = {
-      [this.props.searchValue]: PropTypes.string,
-    };
-
+export const ImageGallery =({searchData, loading, error, handlerOnLoadMoreClick})=> {
     return (
       <>
         {error && (
@@ -115,16 +24,21 @@ export class ImageGallery extends Component {
             ))}
         </GalleryList>
         {!loading && searchData.length > 11 && (
-          <Button handlerOnLoadMoreClick={this.handlerOnLoadMoreClick}>
+          <Button handlerOnLoadMoreClick={handlerOnLoadMoreClick}>
             Load more
           </Button>
         )}
         {loading && <Loader />}
       </>
     );
-  }
 }
 
+ImageGallery.propTypes = {
+  searchData: PropTypes.arrayOf(PropTypes.object).isRequired,
+  loading: PropTypes.bool.isRequired,
+  handlerOnLoadMoreClick: PropTypes.func.isRequired,
+  error: PropTypes.object,
+};
 // if (status === 'pending') {
 //   return (
 //     <div style={{ width: 50, margin: ' 0 auto' }}>
