@@ -4,6 +4,11 @@ import { Component } from 'react';
 import PropTypes from 'prop-types';
 
 export class ImageGalleryItem extends Component {
+  static propTypes = {
+    largeImageURL: PropTypes.string.isRequired,
+    webformatURL: PropTypes.string.isRequired,
+    tags: PropTypes.string.isRequired,
+  };
   state = {
     isOpen: false,
   };
@@ -15,11 +20,7 @@ export class ImageGalleryItem extends Component {
 
   render() {
     const { largeImageURL, webformatURL, tags } = this.props;
-    ImageGalleryItem.propTypes = {
-      largeImageURL: PropTypes.string,
-      webformatURL: PropTypes.string,
-      tags: PropTypes.string,
-    };
+
     return (
       <>
         <GalleryItem onClick={this.toggleModal}>

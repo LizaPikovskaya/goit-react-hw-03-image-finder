@@ -4,34 +4,45 @@ import { Button } from 'components/Button/Button';
 import PropTypes from 'prop-types';
 import { Loader } from 'components/Loader/Loader';
 
-export const ImageGallery =({searchData, loading, error, handlerOnLoadMoreClick})=> {
-    return (
-      <>
-        {error && (
-          <p style={{ margin: 50, fontSize: 24, fontWeight: 500 }}>
-            {error.message}
-          </p>
-        )}
-        <GalleryList>
-          {searchData.length > 0 &&
-            searchData.map(({ id, webformatURL, largeImageURL, tags }) => (
-              <ImageGalleryItem
-                key={id}
-                webformatURL={webformatURL}
-                largeImageURL={largeImageURL}
-                tags={tags}
-              />
-            ))}
-        </GalleryList>
-        {!loading && searchData.length > 11 && (
-          <Button handlerOnLoadMoreClick={handlerOnLoadMoreClick}>
-            Load more
-          </Button>
-        )}
-        {loading && <Loader />}
-      </>
-    );
-}
+export const ImageGallery = ({
+  searchData,
+  loading,
+  error,
+  handlerOnLoadMoreClick,
+  dataLengthPerPage,
+}) => {
+  return (
+    <>
+      {error && (
+        <p style={{ margin: 50, fontSize: 24, fontWeight: 500 }}>
+          {error.message}
+        </p>
+      )}
+      <GalleryList>
+        {searchData.length > 0 &&
+          searchData.map(({ id, webformatURL, largeImageURL, tags }) => (
+            <ImageGalleryItem
+              key={id}
+              webformatURL={webformatURL}
+              largeImageURL={largeImageURL}
+              tags={tags}
+            />
+          ))}
+      </GalleryList>
+      {!loading && dataLengthPerPage === 12 && (
+        <Button handlerOnLoadMoreClick={handlerOnLoadMoreClick}>
+          Load more
+        </Button>
+      )}
+      {dataLengthPerPage > 0 && dataLengthPerPage < 12 && (
+        <p style={{ margin: 50, fontSize: 24, fontWeight: 500 }}>
+          There is no more images on your request.
+        </p>
+      )}
+      {loading && <Loader />}
+    </>
+  );
+};
 
 ImageGallery.propTypes = {
   searchData: PropTypes.arrayOf(PropTypes.object).isRequired,

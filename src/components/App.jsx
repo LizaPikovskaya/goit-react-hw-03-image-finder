@@ -10,6 +10,7 @@ export class App extends Component {
     loading: false,
     page: 1,
     error: null,
+    dataLengthPerPage: null,
   };
 
   componentDidUpdate(_, prevState) {
@@ -30,13 +31,13 @@ export class App extends Component {
         .then(data => {
           this.setState(prevState => ({
             searchData: [...prevState.searchData, ...data.hits],
+            dataLengthPerPage: data.hits.length,
           }));
           if (data.hits.length === 0) {
             return Promise.reject(new Error('По запросу нічого не знайдено.'));
           }
         })
-        .catch(error => 
-          this.setState({ error }))
+        .catch(error => this.setState({ error }))
         .finally(() => {
           this.setState({ loading: false });
         });
@@ -48,34 +49,32 @@ export class App extends Component {
     }));
   };
 
-  takeValueFromSearchBar = value => {
+  useValueFromSearchBar = value => {
     this.setState({
       value,
     });
-  };
 
-  clearDataOnSubmit = () => {
     this.setState(prevState => {
       if (prevState.value !== this.state.value) {
         return {
           searchData: [],
+          page: 1,
         };
       }
     });
   };
 
   render() {
+    const { searchData, loading, error, dataLengthPerPage } = this.state;
     return (
       <>
-        <Searchbar
-          takeValueFromSearchBar={this.takeValueFromSearchBar}
-          clearDataOnSubmit={this.clearDataOnSubmit}
-        />
+        <Searchbar useValueFromSearchBar={this.useValueFromSearchBar} />
         <ImageGallery
-          searchData={this.state.searchData}
-          loading={this.state.loading}
-          error={this.state.error}
+          searchData={searchData}
+          loading={loading}
+          error={error}
           handlerOnLoadMoreClick={this.handlerOnLoadMoreClick}
+          dataLengthPerPage={dataLengthPerPage}
         />
       </>
     );

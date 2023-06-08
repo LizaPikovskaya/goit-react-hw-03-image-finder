@@ -3,6 +3,11 @@ import { ModalDiv, Overlay } from './Modal.styled';
 import PropTypes from 'prop-types';
 
 export class Modal extends Component {
+  static propTypes = {
+    largeImage: PropTypes.string,
+    tags: PropTypes.string,
+    toggleModal: PropTypes.func,
+  };
   componentDidMount() {
     window.addEventListener('keydown', this.handlerCloseModalByEsc);
   }
@@ -21,11 +26,6 @@ export class Modal extends Component {
   };
   render() {
     const { largeImage, tags } = this.props;
-    Modal.propTypes = {
-      largeImage: PropTypes.string,
-      tags: PropTypes.string,
-      [this.props.toggleModal]: PropTypes.func,
-    };
     return (
       <Overlay onClick={this.handlerOverlayClick}>
         <ModalDiv>

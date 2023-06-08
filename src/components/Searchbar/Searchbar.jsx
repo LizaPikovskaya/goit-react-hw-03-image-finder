@@ -12,6 +12,10 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 export class Searchbar extends Component {
+  static propTypes = {
+    useValueFromSearchBar: PropTypes.func,
+  };
+
   state = {
     value: '',
   };
@@ -20,8 +24,7 @@ export class Searchbar extends Component {
     if (!this.state.value.trim()) {
       return toast.warn('Please, fill the field.');
     }
-    this.props.takeValueFromSearchBar(this.state.value);
-    this.props.clearDataOnSubmit();
+    this.props.useValueFromSearchBar(this.state.value);
     this.reset();
   };
   handlerOnChange = evt => {
@@ -32,9 +35,6 @@ export class Searchbar extends Component {
     this.setState({ value: '' });
   };
   render() {
-    Searchbar.propTypes = {
-      [this.props.takeValueFromSearchBar]: PropTypes.func,
-    };
     return (
       <Header>
         <SearchForm onSubmit={this.handlerSubmit}>
