@@ -21,14 +21,15 @@ export class App extends Component {
     ) {
       this.setState({ loading: true, error: null });
       fetchImages(value, page)
-        .then(resp => {
-          if (resp.ok) {
-            return resp.json();
-          } else {
-            return Promise.reject(new Error('По запросу нічого не знайдено.'));
-          }
-        })
-        .then(data => {
+        // .then(resp => {
+        //   if (resp.ok) {
+        //     return resp.json();
+        //   } else {
+        //     return Promise.reject(new Error('По запросу нічого не знайдено.'));
+        //   }
+        // })
+        .then(response => {
+          const { data } = response;
           this.setState(prevState => ({
             searchData: [...prevState.searchData, ...data.hits],
             dataLengthPerPage: data.hits.length,
