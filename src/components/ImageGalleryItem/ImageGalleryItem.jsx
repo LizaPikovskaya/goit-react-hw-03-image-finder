@@ -12,6 +12,7 @@ export class ImageGalleryItem extends Component {
   state = {
     isOpen: false,
   };
+
   toggleModal = () => {
     this.setState(({ isOpen }) => ({
       isOpen: !isOpen,

@@ -36,7 +36,7 @@ export const ImageGallery = ({
       )}
       {dataLengthPerPage > 0 && dataLengthPerPage < 12 && (
         <p style={{ margin: 50, fontSize: 24, fontWeight: 500 }}>
-          There is no more images on your request.
+          There are no more images on your request.
         </p>
       )}
       {loading && <Loader />}

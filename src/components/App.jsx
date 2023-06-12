@@ -14,7 +14,12 @@ export class App extends Component {
   };
 
   componentDidUpdate(_, prevState) {
-    const { value, page } = this.state;
+    const { value, page, searchData } = this.state;
+    if(prevState.searchData !== searchData && page !== 1) {
+window.scrollBy({
+  top: 300 * 2,
+  behavior: 'smooth',
+});    }
     if (
       prevState.value !== this.state.value ||
       prevState.page !== this.state.page
@@ -29,6 +34,7 @@ export class App extends Component {
         //   }
         // })
         .then(response => {
+          console.log(response);
           const { data } = response;
           this.setState(prevState => ({
             searchData: [...prevState.searchData, ...data.hits],
